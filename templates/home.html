@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cloud Training LAB</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.303/pdf.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Cloud Training LAB at Seasides </h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link">Home</a></li>
+            <li><a href="#" class="nav-link">About</a></li>
+            <li><a href="#" class="nav-link">Services</a></li>
+            <li><a href="#" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="about">
+            <h2>About Us</h2>
+            <p>Time is less, so lets focus on solving lab</p>
+        </section>
+
+        <section id="services">
+            <h2>Our Services</h2>
+            <ul>
+                <li>Web Design</li>
+                <li>Graphic Design</li>
+                <li>App Development</li>
+            </ul>
+        </section>
+    </main>
+
+    <h1>View PDF</h1>
+
+    <!-- Input for PDF file URL -->
+    <input type="text" id="pdfUrlInput" placeholder="Enter PDF URL">
+    <button onclick="loadPDFFromURL()">Load PDF from URL</button>
+
+    <div id="pdf-container">
+        <!-- PDF content will be loaded here -->
+    </div>
+
+    <script>
+        var pdfContainer = document.getElementById('pdf-container');
+        var pdfUrlInput = document.getElementById('pdfUrlInput');
+        var pdfFileInput = document.getElementById('pdfFileInput');
+
+        function loadPDFFromURL() {
+            var pdfUrl = pdfUrlInput.value;
+
+            // Asynchronous download PDF from URL
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                // Fetch the first page
+                return pdf.getPage(1);
+            }).then(function(page) {
+                // Set the desired scale (e.g., 1.5 for 150% zoom)
+                var scale = 1.5;
+
+                // Get viewport for the page
+                var viewport = page.getViewport({ scale: scale });
+
+                // Prepare a canvas element
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Clear the previous PDF content
+                pdfContainer.innerHTML = '';
+
+                // Append the canvas to the PDF container
+                pdfContainer.appendChild(canvas);
+
+                // Render the page content on the canvas
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            }).catch(function(error) {
+                alert('Error loading PDF: ' + error.message);
+            });
+        }
+    </script>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <footer>
+        <p>&copy; 2023 All rights reserved.</p>
+    </footer>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
