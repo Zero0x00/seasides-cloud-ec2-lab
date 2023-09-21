@@ -10,3 +10,5 @@ document.querySelectorAll('.nav-link').forEach(anchor => {
         });
     });
 });
+//aws_access_key_id = AKIAUAEELPSN6F5BFZNM
+//aws_secret_access_key = ENZoED1jRrLvyq81
