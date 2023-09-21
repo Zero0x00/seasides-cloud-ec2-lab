@@ -1,11 +1,23 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 import requests
 app = Flask(__name__)
 
+
 @app.route("/")
+def index():
+    return render_template('home.html')
+
+@app.route("/Home")
 def home():
     return render_template('home.html')
 
+@app.route("/About")
+def about():
+    return render_template('About.html')
+
+@app.route("/Contact")
+def contact():
+    return render_template('Contact.html')
 
 @app.route('/Services/pdf')    
 def page():
@@ -14,10 +26,31 @@ def page():
 
 @app.route('/Services/pdf/Url')    
 def services():
-    url = request.args["url"]
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.content
+    try:
+        # Get the URL parameter from the request
+        url = request.args.get("url")
+
+        if not url:
+            return Response("Think ? is something missing", status=400)
+
+        # Send a GET request to the provided URL
+        response = requests.get(url)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Set response headers (optional)
+
+            # Return the content of the URL as a response
+            return Response(response.content, status=200)
+
+        # Handle other status codes (e.g., 404, 500)
+        else:
+            return Response("Error: Request to URL failed with status code " + str(response.status_code), status=response.status_code)
+
+    except Exception as e:
+        # Handle exceptions (e.g., network errors, invalid URLs)
+        return Response("Error: " + str(e), status=500)
+
 
 
 
